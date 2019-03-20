@@ -1,0 +1,1 @@
+A boilerplate with good defaults to quickly start writing a vanilla javascript application, wether to prove a concept, write a draft or a full solution.
