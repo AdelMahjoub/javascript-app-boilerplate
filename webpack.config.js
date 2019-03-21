@@ -1,10 +1,12 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ImageminPlugin = require('imagemin-webpack-plugin').default;
 const webpack = require('webpack');
 
+const imageExtensions = ['png', 'jpg', 'gif'];
 let webpackMode = process.env.WEBPACK_MODE;
 let dev = webpackMode === 'development';
 
@@ -21,18 +23,6 @@ const config = {
       {
         test: /\.css$/,
         use: [dev ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader']
-      },
-      {
-        test: /\.(png|svg|jpg|gif|mp3|ogg|oga|m4a|webm|woff|woff2|eot|ttf|otf)$/,
-        use: ['file-loader']
-      },
-      {
-        test: /\.(csv|tsv)$/,
-        use: ['csv-loader']
-      },
-      {
-        test: /\.(xml)$/,
-        use: ['xml-loader']
       }
     ]
   },
@@ -47,7 +37,10 @@ const config = {
         removeComments: true,
         removeRedundantAttributes: true
       }
-    })
+    }),
+    new CopyPlugin([
+      { from: path.resolve(__dirname, 'assets'), to: path.resolve(__dirname, 'dist', 'assets') }
+    ])
   ]
 }
 
@@ -61,7 +54,23 @@ if (dev) {
   config.plugins.push(new MiniCssExtractPlugin({
     filename: "[name].[hash].css",
   }));
-  config.plugins.push(new ImageminPlugin())
+  config.plugins.push(new ImageminPlugin({
+    test: filename => {
+      let ext = null;
+      try {
+        ext = filename.split('.').pop();
+      } catch (ex) {
+        return false;
+      }
+      if (!ext) {
+        return false;
+      }
+      if (imageExtensions.indexOf(ext) !== -1) {
+        return true;
+      }
+      return false;
+    }
+  }))
 }
 
 module.exports = config;
