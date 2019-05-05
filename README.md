@@ -1,1 +1,15 @@
-A boilerplate with good defaults to quickly start writing a vanilla javascript application, wether to prove a concept, write a draft or a full solution.
+# Clone the repo
+`$ git clone git@github.com:AdelMahjoub/javascript-app-boilerplate.git`
+
+or
+
+`$ git clone https://github.com/AdelMahjoub/javascript-app-boilerplate.git`
+
+# Install dependencies
+`$ npm i`
+
+# Run the development server
+`$ npm start`
+
+# Build a distribution
+`$ npm run build`
