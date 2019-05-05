@@ -27,6 +27,9 @@ const config = {
     ]
   },
   plugins: [
+    new webpack.DefinePlugin({
+      __DEV__: JSON.stringify(dev)
+    }),
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       title: 'javascript app',
